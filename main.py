@@ -1,12 +1,21 @@
-"""Главный модуль приложения Vinyl Collection Service."""
+"""Главный модуль приложения Vinyl Collection Service (ПР3, ООП-версия)."""
+from __future__ import annotations
+
 from utils import input_int, input_str
-from storage import load_records, save_records, load_collections, save_collections
-from records import add_record, show_records
-from vinyl_collections import (
+from storage import (
+    load_records, save_records,
+    load_collections, save_collections,
+    load_users, save_users,
+)
+from models import Record, Collection, User
+from models.records import add_record, show_records, find_record
+from models.collections import (
     add_collection,
     show_collections,
     show_collection_content,
+    find_collection_by_id,
 )
+from models.users import add_user, show_users, find_user
 
 
 def show_main_menu() -> None:
@@ -18,19 +27,47 @@ def show_main_menu() -> None:
     print("4. Добавить пластинку")
     print("5. Добавить коллекцию")
     print("6. Найти пластинку")
+    print("7. Показать пользователей")
+    print("8. Добавить пользователя")
     print("0. Выход")
 
 
-def main() -> None:
-    """Точка запуска приложения: загрузка данных и главный цикл меню."""
-    records = load_records()
-    collections = load_collections()
-
+def create_new_collection(
+    collections: list[Collection],
+    records: list[Record],
+) -> None:
+    """Создать новую коллекцию с выбором пластинок из каталога."""
+    name = input_str("Введите название коллекции: ")
     if not records:
-        print("Каталог пластинок пуст. Добавьте первую пластинку.")
-    else:
-        print(f"Загружено пластинок: {len(records)}")
-        print(f"Загружено коллекций: {len(collections)}")
+        print("Сначала добавьте хотя бы одну пластинку.")
+        return
+
+    show_records(records)
+    print("Введите номера пластинок по одному. Для завершения введите 0.")
+
+    selected: list[Record] = []
+    while True:
+        num = input_int("Номер пластинки (0 — завершить): ")
+        if num == 0:
+            break
+        if 1 <= num <= len(records):
+            selected.append(records[num - 1])
+        else:
+            print("Пластинки с таким номером нет.")
+
+    collection = add_collection(collections, name, selected)
+    print(f"Коллекция создана: {collection}")
+
+
+def main() -> None:
+    """Точка запуска: загрузка данных в виде объектов и главный цикл меню."""
+    records = load_records()
+    collections = load_collections(records)
+    users = load_users()
+
+    print(f"Загружено пластинок: {len(records)}")
+    print(f"Загружено коллекций: {len(collections)}")
+    print(f"Загружено пользователей: {len(users)}")
 
     while True:
         show_main_menu()
@@ -48,49 +85,46 @@ def main() -> None:
                 continue
             show_collections(collections)
             index = input_int("Введите номер коллекции: ")
-            show_collection_content(collections, records, index)
+            if 1 <= index <= len(collections):
+                show_collection_content(collections[index - 1])
+            else:
+                print("Коллекции с таким номером нет.")
 
         elif choice == 4:
             title = input_str("Введите название пластинки: ")
             artist = input_str("Введите исполнителя: ")
             genre = input_str("Введите жанр: ")
             year = input_int("Введите год выпуска (0 — если неизвестен): ")
-            add_record(records, title, artist, genre, year)
+            if not Record.validate_year(year):
+                print("Некорректный год. Пластинка не добавлена.")
+                continue
+            record = add_record(records, title, artist, genre, year)
             save_records(records)
-            print("Пластинка добавлена.")
+            print(f"Пластинка добавлена: {record}")
 
         elif choice == 5:
-            name = input_str("Введите название коллекции: ")
-            if not records:
-                print("Сначала добавьте хотя бы одну пластинку.")
-                continue
-
-            show_records(records)
-            print("Введите номера пластинок по одному. Для завершения введите 0.")
-            record_ids = []
-            while True:
-                num = input_int("Номер пластинки (0 — завершить): ")
-                if num == 0:
-                    break
-                if 1 <= num <= len(records):
-                    record_ids.append(records[num - 1]["id"])
-                else:
-                    print("Пластинки с таким номером нет.")
-
-            add_collection(collections, name, record_ids)
+            create_new_collection(collections, records)
             save_collections(collections)
-            print("Коллекция добавлена.")
 
         elif choice == 6:
-            from records import find_record
             query = input_str("Введите название или исполнителя для поиска: ")
             found = find_record(records, query)
             if found:
                 print(f"Найдено: {len(found)}")
                 for record in found:
-                    print(f"  - {record['title']} — {record.get('artist', '?')}")
+                    print(f"  - {record}")
             else:
                 print("Ничего не найдено.")
+
+        elif choice == 7:
+            show_users(users)
+
+        elif choice == 8:
+            name = input_str("Введите имя пользователя: ")
+            email = input_str("Введите email: ")
+            user = add_user(users, name, email)
+            save_users(users)
+            print(f"Пользователь добавлен: {user}")
 
         elif choice == 0:
             print("Пока!")

@@ -1,0 +1,74 @@
+"""Модуль для работы с пользователями: класс User и функции обработки."""
+from __future__ import annotations
+
+
+class User:
+    """Пользователь системы."""
+
+    def __init__(self, user_id: int, name: str, email: str) -> None:
+        """Создать объект пользователя."""
+        self.id = user_id
+        self.name = name
+        self.email = email
+
+    @classmethod
+    def from_data(cls, data: dict) -> "User":
+        """Создать объект User из словаря (данные из JSON)."""
+        return cls(
+            user_id=data["id"],
+            name=data["name"],
+            email=data["email"],
+        )
+
+    def to_data(self) -> dict:
+        """Преобразовать объект в словарь для сохранения в JSON."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+        }
+
+    def __str__(self) -> str:
+        return f"{self.name} <{self.email}>"
+
+    def __repr__(self) -> str:
+        return f"User(id={self.id}, name={self.name!r})"
+
+
+# ---------- Функции обработки коллекции ----------
+
+def add_user(users: list[User], name: str, email: str) -> User:
+    """Создать объект User и добавить его в коллекцию.
+
+    Возвращает созданный объект.
+    """
+    new_id = max((u.id for u in users), default=0) + 1
+    user = User(new_id, name, email)
+    users.append(user)
+    return user
+
+
+def find_user(users: list[User], query: str) -> list[User]:
+    """Найти пользователей по имени или email."""
+    query_lower = query.lower()
+    return [
+        u for u in users
+        if query_lower in u.name.lower() or query_lower in u.email.lower()
+    ]
+
+
+def find_user_by_id(users: list[User], user_id: int) -> User | None:
+    """Найти пользователя по id."""
+    for user in users:
+        if user.id == user_id:
+            return user
+    return None
+
+
+def show_users(users: list[User]) -> None:
+    """Вывести список пользователей."""
+    if not users:
+        print("Пользователи отсутствуют.")
+        return
+    for index, user in enumerate(users, start=1):
+        print(f"{index}. {user}")
