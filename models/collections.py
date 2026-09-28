@@ -55,7 +55,6 @@ class Collection:
         return f"Collection(id={self.id}, name={self.name!r})"
 
 
-
 def add_collection(
     collections: list[Collection],
     name: str,

@@ -27,7 +27,8 @@ def test_record_validate_year():
 
 
 def test_record_from_data():
-    data = {"id": 1, "title": "Abbey Road", "artist": "The Beatles", "year": 1969}
+    data = {"id": 1, "title": "Abbey Road",
+            "artist": "The Beatles", "year": 1969}
     record = Record.from_data(data)
     assert record.title == "Abbey Road"
     assert record.artist == "The Beatles"

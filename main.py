@@ -34,7 +34,6 @@ def create_new_collection(
     collections: list[Collection],
     records: list[Record],
 ) -> None:
-    """Создать новую коллекцию с выбором пластинок из каталога."""
     name = input_str("Введите название коллекции: ")
     if not records:
         print("Сначала добавьте хотя бы одну пластинку.")
@@ -58,7 +57,6 @@ def create_new_collection(
 
 
 def main() -> None:
-    """Точка запуска: загрузка данных в виде объектов и главный цикл меню."""
     records = load_records()
     collections = load_collections(records)
     users = load_users()

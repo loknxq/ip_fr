@@ -23,7 +23,7 @@ def test_collection_add_duplicate():
     collection = Collection(1, "Классика рока")
     collection.add_record(record)
     collection.add_record(record)
-    assert collection.size == 1 
+    assert collection.size == 1
 
 
 def test_collection_remove_record():

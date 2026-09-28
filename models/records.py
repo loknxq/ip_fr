@@ -55,7 +55,6 @@ class Record:
         return f"Record(id={self.id}, title={self.title!r})"
 
 
-
 def add_record(
     records: list[Record],
     title: str,

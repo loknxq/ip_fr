@@ -30,7 +30,6 @@ class User:
         return f"User(id={self.id}, name={self.name!r})"
 
 
-
 def add_user(users: list[User], name: str, email: str) -> User:
     new_id = max((u.id for u in users), default=0) + 1
     user = User(new_id, name, email)

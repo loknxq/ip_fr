@@ -37,7 +37,6 @@ def save_records(records: list[Record]) -> None:
         )
 
 
-
 def load_collections(all_records: list[Record]) -> list[Collection]:
     try:
         with open(COLLECTIONS_FILE, "r", encoding="utf-8") as file:
