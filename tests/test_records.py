@@ -1,4 +1,4 @@
-"""Тесты для класса Record и функций модуля records."""
+
 from models import Record
 from models.records import (
     add_record, find_record, find_record_by_id,

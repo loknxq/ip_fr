@@ -1,4 +1,3 @@
-"""Главный модуль приложения Vinyl Collection Service (ПР3, ООП-версия)."""
 from __future__ import annotations
 
 from utils import input_int, input_str
@@ -19,7 +18,6 @@ from models.users import add_user, show_users, find_user
 
 
 def show_main_menu() -> None:
-    """Вывести главное меню приложения."""
     print("\n=== Vinyl Collection Service ===")
     print("1. Показать все пластинки")
     print("2. Показать все коллекции")

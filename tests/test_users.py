@@ -1,4 +1,4 @@
-"""Тесты для класса User."""
+
 from models import User
 from models.users import add_user, find_user, find_user_by_id
 

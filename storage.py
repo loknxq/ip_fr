@@ -1,4 +1,3 @@
-"""Модуль для сохранения и загрузки данных проекта в JSON-файлы."""
 from __future__ import annotations
 import json
 import os
@@ -12,14 +11,10 @@ USERS_FILE = os.path.join(DATA_DIR, "users.json")
 
 
 def _ensure_data_dir() -> None:
-    """Создать каталог data, если его нет."""
     os.makedirs(DATA_DIR, exist_ok=True)
 
 
-# ---------- Records ----------
-
 def load_records() -> list[Record]:
-    """Загрузить пластинки из JSON и преобразовать их в объекты Record."""
     try:
         with open(RECORDS_FILE, "r", encoding="utf-8") as file:
             data = json.load(file)
@@ -32,7 +27,6 @@ def load_records() -> list[Record]:
 
 
 def save_records(records: list[Record]) -> None:
-    """Сохранить объекты Record в JSON."""
     _ensure_data_dir()
     with open(RECORDS_FILE, "w", encoding="utf-8") as file:
         json.dump(
@@ -43,10 +37,8 @@ def save_records(records: list[Record]) -> None:
         )
 
 
-# ---------- Collections ----------
 
 def load_collections(all_records: list[Record]) -> list[Collection]:
-    """Загрузить коллекции из JSON и восстановить связи с объектами Record."""
     try:
         with open(COLLECTIONS_FILE, "r", encoding="utf-8") as file:
             data = json.load(file)
@@ -59,7 +51,6 @@ def load_collections(all_records: list[Record]) -> list[Collection]:
 
 
 def save_collections(collections: list[Collection]) -> None:
-    """Сохранить объекты Collection в JSON."""
     _ensure_data_dir()
     with open(COLLECTIONS_FILE, "w", encoding="utf-8") as file:
         json.dump(
@@ -70,10 +61,7 @@ def save_collections(collections: list[Collection]) -> None:
         )
 
 
-# ---------- Users ----------
-
 def load_users() -> list[User]:
-    """Загрузить пользователей из JSON."""
     try:
         with open(USERS_FILE, "r", encoding="utf-8") as file:
             data = json.load(file)
@@ -86,7 +74,6 @@ def load_users() -> list[User]:
 
 
 def save_users(users: list[User]) -> None:
-    """Сохранить объекты User в JSON."""
     _ensure_data_dir()
     with open(USERS_FILE, "w", encoding="utf-8") as file:
         json.dump(
