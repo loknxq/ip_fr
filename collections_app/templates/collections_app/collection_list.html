@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Коллекции - Vinyl Collection{% endblock %}
+
+{% block content %}
+<h1>Коллекции</h1>
+<ul class="list-group mt-3">
+    {% for coll in collections %}
+        <li class="list-group-item">
+            <a href="{% url 'collections_app:collection_detail' coll.id %}">
+                {{ coll.name }} ({{ coll.size }} шт.)
+            </a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Коллекции отсутствуют.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

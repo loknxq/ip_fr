@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Vinyl Collection{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Vinyl Collection Service</h1>
+<p class="lead">Сервис для учета виниловых пластинок и коллекций.</p>
+<p>Основные разделы:</p>
+<a href="{% url 'records:records' %}" class="btn btn-primary me-2">Пластинки</a>
+<a href="{% url 'collections_app:collections' %}" class="btn btn-secondary">Коллекции</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if record %}{{ record.title }} - Vinyl{% else %}Пластинка не найдена{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if record %}
+    <div class="card vinyl-card">
+        <div class="card-body">
+            <h5 class="card-title">{{ record.title }}</h5>
+            <p class="card-text"><strong>Исполнитель:</strong> {{ record.artist }}</p>
+            <p class="card-text"><strong>Жанр:</strong> {{ record.genre|default:"Не указан" }}</p>
+            <p class="card-text"><strong>Год:</strong> {{ record.year|default:"Неизвестен" }}</p>
+        </div>
+    </div>
+{% else %}
+    <h1 class="text-danger">Пластинка не найдена</h1>
+{% endif %}
+<a href="{% url 'records:records' %}" class="btn btn-outline-secondary mt-3">← к списку</a>
+{% endblock %}

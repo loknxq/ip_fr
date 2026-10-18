@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if collection %}{{ collection.name }} - Vinyl{% else %}Коллекция не найдена{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if collection %}
+    <div class="card vinyl-card">
+        <div class="card-body">
+            <h5 class="card-title">{{ collection.name }}</h5>
+            <p class="card-text">Количество пластинок: {{ collection.size }}</p>
+            <h6>Содержимое:</h6>
+            <ul>
+                {% for rec in collection.records %}
+                    <li>{{ rec.title }} — {{ rec.artist }}</li>
+                {% empty %}
+                    <li>Коллекция пуста</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% else %}
+    <h1 class="text-danger">Коллекция не найдена</h1>
+{% endif %}
+<a href="{% url 'collections_app:collections' %}" class="btn btn-outline-secondary mt-3">← к списку</a>
+{% endblock %}
