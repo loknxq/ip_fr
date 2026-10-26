@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ collection.name }}{% endblock %}
+{% block content %}
+{% if collection %}
+    <h1>{{ collection.name }}</h1>
+    <ul class="list-group">
+        {% for r in records %}
+            <li class="list-group-item">{{ r.title }} — {{ r.artist }}</li>
+        {% empty %}
+            <li class="list-group-item">Коллекция пуста.</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h1 class="text-danger">Коллекция не найдена</h1>
+{% endif %}
+<a href="{% url 'collections_app:collections' %}" class="btn btn-secondary mt-3">← к коллекциям</a>
+{% endblock %}

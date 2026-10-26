@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Поиск пластинок{% endblock %}
+{% block content %}
+<h1>Поиск: «{{ query }}»</h1>
+<ul class="list-group">
+    {% for record in results %}
+        <li class="list-group-item">
+            <a href="{% url 'records:record_detail' record.id %}">
+                {{ record.title }} — {{ record.artist }}
+            </a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Ничего не найдено.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'records:records' %}" class="btn btn-secondary mt-3">← к списку</a>
+{% endblock %}

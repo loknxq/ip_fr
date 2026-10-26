@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Коллекции{% endblock %}
+{% block content %}
+<h1>Коллекции</h1>
+<ul class="list-group">
+    {% for c in collections %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'collections_app:collection_detail' c.id %}">{{ c.name }}</a>
+            <span class="badge bg-primary">{{ c.records_count }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Коллекций нет.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

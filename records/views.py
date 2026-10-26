@@ -1,26 +1,60 @@
+import sqlite3
 from django.shortcuts import render
-from models.records import find_record_by_id
-from storage import load_records
+
+DB_PATH = "data/vinyl.sqlite"
+
 
 def records(request):
-    """Страница со списком всех пластинок."""
-    records_list = load_records()
-    context = {
-        "records": records_list,
-    }
-    return render(request, "records/record_list.html", context)
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    records_list = conn.execute(
+        """
+        SELECT id, title, artist, genre, year
+        FROM records
+        ORDER BY title;
+        """
+    ).fetchall()
+    conn.close()
+    return render(request,
+                  "records/record_list.html",
+                  {"records": records_list})
+
 
 def record_detail(request, record_id):
-    """Страница конкретной пластинки."""
-    records_list = load_records()
-    record = find_record_by_id(records_list, record_id)
-
-    context = {
-        "record": record,
-    }
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    record = conn.execute(
+        "SELECT id, title, artist, genre, year FROM records WHERE id = ?;",
+        [record_id],
+    ).fetchone()
+    conn.close()
     return render(
-        request, 
-        "records/record_detail.html", 
-        context, 
-        status=404 if record is None else 200
+        request,
+        "records/record_detail.html",
+        {"record": record},
+        status=404 if record is None else 200,
+    )
+
+
+def search_records(request):
+    query = request.GET.get("q", "").strip()
+    results = []
+    if query:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        results = conn.execute(
+            """
+            SELECT id, title, artist, genre, year
+            FROM records
+            WHERE title LIKE '%' || ? || '%'
+               OR artist LIKE '%' || ? || '%'
+            ORDER BY title;
+            """,
+            [query, query],
+        ).fetchall()
+        conn.close()
+    return render(
+        request,
+        "records/search.html",
+        {"results": results, "query": query},
     )
