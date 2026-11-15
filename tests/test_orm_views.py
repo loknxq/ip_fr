@@ -223,13 +223,15 @@ class ORMViewTests(TestCase):
 
     def test_details_and_related_objects_need_two_queries(self):
         self.jazz_collection.records.add(self.abbey)
-        with self.assertNumQueries(2):
+        # ПР10: +1 фиксированный COUNT для общей навигации.
+        with self.assertNumQueries(3):
             response = self.client.get(reverse(
                 "records:record_detail", args=[self.abbey.pk],
             ))
         self.assertContains(response, "Rock favorites")
         self.assertContains(response, "Evening jazz")
-        with self.assertNumQueries(2):
+        # ПР10: +1 фиксированный COUNT для общей навигации.
+        with self.assertNumQueries(3):
             response = self.client.get(reverse(
                 "collections_app:collection_detail", args=[self.rock.pk],
             ))

@@ -82,6 +82,9 @@ class ImportTests(TestCase):
 
     def test_identical_repeat_import_does_not_duplicate(self):
         self.run_import()
+        imported = Record.objects.get(pk=5)
+        self.assertTrue(imported.slug)
+        self.assertTrue(imported.is_vintage)
         message = self.run_import()
         self.assertEqual(Record.objects.count(), 2)
         self.assertEqual(User.objects.count(), 1)

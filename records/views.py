@@ -4,8 +4,10 @@ from datetime import date
 from re import escape
 
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Prefetch, Q
 from django.shortcuts import get_object_or_404, render
+
+from collections_app.models import CollectionRecord
 
 from .forms import RECORD_SORTS, RecordFilterForm
 from .models import Record
@@ -46,7 +48,11 @@ def _catalog_context(request, *, require_query=False):
             )
         if filters.get("collection"):
             queryset = queryset.filter(
-                collections__pk=filters["collection"].pk,
+                collection_links__collection=filters["collection"],
+                collection_links__status__in=(
+                    CollectionRecord.Status.IN_COLLECTION,
+                    CollectionRecord.Status.RESERVED,
+                ),
             )
         if filters.get("known_year"):
             queryset = queryset.exclude(Q(year=0) | Q(year__isnull=True))
@@ -72,14 +78,36 @@ def records(request):
     )
 
 
-def record_detail(request, record_id):
+def _record_detail(request, **lookup):
+    # Prefetch именно промежуточных строк: фильтрация по статусу
+    # должна относиться к паре (пластинка, коллекция), а не ко всем
+    # строкам коллекции. select_related загружает имя коллекции за JOIN.
     record = get_object_or_404(
-        Record.objects.prefetch_related("collections"), pk=record_id,
+        Record.objects.prefetch_related(Prefetch(
+            "collection_links",
+            queryset=CollectionRecord.objects.current().select_related(
+                "collection",
+            ).order_by("collection__name", "collection_id"),
+        )),
+        **lookup,
     )
     return render(
         request, "records/record_detail.html",
-        {"record": record, "collections": record.collections.all()},
+        {"record": record,
+         "collections": [
+             link.collection for link in record.collection_links.all()
+         ]},
     )
+
+
+def record_detail(request, record_id):
+    """Совместимость с числовыми адресами предыдущих практик."""
+    return _record_detail(request, pk=record_id)
+
+
+def record_detail_by_slug(request, slug):
+    """Основной адрес подробной страницы пластинки из ПР10."""
+    return _record_detail(request, slug=slug)
 
 
 def search_records(request):

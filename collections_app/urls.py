@@ -1,19 +1,19 @@
 from django.urls import path
+
 from . import views
 
-app_name = 'collections_app'
+app_name = "collections_app"
 
 urlpatterns = [
+    path("", views.collections, name="collections"),
+    path("statistics/", views.statistics, name="statistics"),
+    path("placements/", views.placements, name="placements"),
     path(
-        "",
-        views.collections,
-        name="collections"),
+        "placements/<int:placement_id>/",
+        views.placement_detail, name="placement_detail",
+    ),
     path(
-        "statistics/",
-        views.statistics,
-        name="statistics"),
-    path(
-        "<int:collection_id>/",
-        views.collection_detail,
-        name="collection_detail"),
+        "<int:collection_id>/", views.collection_detail,
+        name="collection_detail",
+    ),
 ]

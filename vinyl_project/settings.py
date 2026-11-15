@@ -27,9 +27,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "homepage",
-    "records",
-    "collections_app",
-    "users",
+    "records.apps.RecordsConfig",
+    "collections_app.apps.CollectionsAppConfig",
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
@@ -69,6 +69,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "records.context_processors.vinyl_context",
             ],
         },
     },

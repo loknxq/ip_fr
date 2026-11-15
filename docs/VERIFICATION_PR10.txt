@@ -1,0 +1,74 @@
+ПРОТОКОЛ ПРОВЕРОК ПР10: VINYL COLLECTION SERVICE
+
+Важно: проверка выполнена в среде без Django и django-debug-toolbar. Данный документ фиксирует только реально выполненные команды; он не утверждает, что HTTP-сценарии/тесты были успешно запущены.
+
+1. ФАКТИЧЕСКИЕ СТАТИЧЕСКИЕ ПРОВЕРКИ
+
+Синтаксис всех Python-файлов: код завершения 0; УСПЕШНО
+Проверка пробелов в незакоммиченных изменениях: код завершения 0; УСПЕШНО
+Проверка первого PR10-коммита: код завершения 0; УСПЕШНО
+317f4a9 PR10: статусы экземпляров, миграции и настройка Django Admin
+AST-синтаксис: УСПЕШНО; прочитано 73 файлов .py
+Исходная db.sqlite3: PRAGMA integrity_check = ok; количества {'records_record': 10, 'collections_app_collection': 5, 'collections_app_collectionrecord': 13, 'users_user': 2}
+Миграции в предоставленной db.sqlite3: [('collections_app', '0001_initial'), ('records', '0001_initial'), ('users', '0001_initial')]
+Резервная копия перед миграциями: data/db_before_pr10.sqlite3 (побайтно идентична db.sqlite3; не отслеживается Git).
+Новые 0002 НЕ ПРИМЕНЯЛИСЬ к рабочей БД в этой среде: её нужно обновить реальной командой python manage.py migrate после установки Django.
+ORM fixture: УСПЕШНО; 30 объектов {'records.record': 10, 'collections_app.collection': 5, 'collections_app.collectionrecord': 13, 'users.user': 2}; 10 уникальных непустых slug
+Независимая проверка SQLite CASE/хранимого GeneratedField: УСПЕШНО; исходные [(1969, 1), (1997, 0), (0, 0), (None, 0)]; после UPDATE [(2001, 0), (1997, 0), (0, 0), (None, 0)]
+
+2. ПРОВЕРКИ DJANGO (ЗАБЛОКИРОВАНЫ ЗАВИСИМОСТЯМИ)
+
+Версия Django: код завершения 1; НЕ ПРОЙДЕНО
+/opt/pyvenv/bin/python: No module named django
+Django system check: код завершения 1; НЕ ПРОЙДЕНО
+Traceback (most recent call last):
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 11, in main
+    from django.core.management import execute_from_command_line
+ModuleNotFoundError: No module named 'django'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 22, in <module>
+    main()
+    ~~~~^^
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 13, in main
+    raise ImportError(
+    ...<3 lines>...
+    ) from exc
+ImportError: Couldn't import Django. Are you sure it's installed and available on your PYTHONPATH environment variable? Did you forget to activate a virtual environment?
+Django migrations check: код завершения 1; НЕ ПРОЙДЕНО
+Traceback (most recent call last):
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 11, in main
+    from django.core.management import execute_from_command_line
+ModuleNotFoundError: No module named 'django'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 22, in <module>
+    main()
+    ~~~~^^
+  File "/mnt/data/work_pr10/ip_fr/manage.py", line 13, in main
+    raise ImportError(
+    ...<3 lines>...
+    ) from exc
+ImportError: Couldn't import Django. Are you sure it's installed and available on your PYTHONPATH environment variable? Did you forget to activate a virtual environment?
+Pytest: код завершения 4; НЕ ПРОЙДЕНО
+ImportError while loading conftest '/mnt/data/work_pr10/ip_fr/conftest.py'.
+conftest.py:5: in <module>
+    import django
+E   ModuleNotFoundError: No module named 'django'
+
+3. ДЕЙСТВИЯ ДЛЯ ЗАВЕРШЕНИЯ ПРОВЕРКИ
+
+В корне ip_fr установите зависимости: python -m pip install -r requirements.txt
+Проверьте подготовку реальной БД: python manage.py migrate
+Далее: python manage.py check
+Далее: python manage.py makemigrations --check --dry-run
+Далее: python manage.py showmigrations
+Далее: pytest -v
+Далее: flake8 . --extend-exclude=venv
+Далее: python manage.py demo_pr10
+Затем createsuperuser/runserver и реальные скриншоты админки, журнала, SQL-панели, терминала.
+Пока эти команды не выполнены в окружении с Django, их успех не подтверждён.

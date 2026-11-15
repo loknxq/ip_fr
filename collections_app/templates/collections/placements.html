@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load collection_extras %}
+{% block title %}Состав и статусы коллекций{% endblock %}
+{% block content %}
+<h1>Экземпляры пластинок в коллекциях</h1>
+<p>Статус учитывает экземпляр пластинки в конкретной коллекции: <strong>в коллекции</strong> — доступен для обмена; <strong>зарезервирована</strong> — временно недоступна; <strong>выведена</strong> — сохранена только в истории.</p>
+<form method="get" class="card card-body mb-4" aria-label="Фильтры состава коллекций">
+    {% if form.errors %}<div class="alert alert-danger" role="alert">Исправьте параметры фильтрации. {{ form.non_field_errors }}</div>{% endif %}
+    <div class="row g-3">
+        {% for field in form %}
+            <div class="col-md-4">
+                {% if field.field.widget.input_type == "checkbox" %}
+                    <div class="form-check">{{ field }} {{ field.label_tag }}</div>
+                {% else %}
+                    {{ field.label_tag }} {{ field }}
+                {% endif %}
+                {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Применить</button>
+        <a href="{% url 'collections_app:placements' %}" class="btn btn-outline-secondary">Сбросить</a>
+    </div>
+</form>
+<p class="text-muted">Найдено: {{ page_obj.paginator.count }}. По {{ page_obj.paginator.per_page }} экземпляров на странице.</p>
+<div class="table-responsive">
+    <table class="table">
+        <thead><tr>
+            <th scope="col">Коллекция</th><th scope="col">Пластинка</th>
+            <th scope="col">Исполнитель</th><th scope="col">Год</th>
+            <th scope="col">Состояние</th><th scope="col">Карточка</th>
+        </tr></thead>
+        <tbody>
+        {% for placement in placements %}
+            <tr>
+                <td><a href="{% url 'collections_app:collection_detail' placement.collection_id %}">{{ placement.collection_name }}</a></td>
+                <td>{{ placement.record_title }}</td>
+                <td>{{ placement.record_artist }}</td>
+                <td>{{ placement.record_year|default:"Неизвестен" }}</td>
+                <td>{{ placement.status|placement_status_label }}</td>
+                <td><a href="{% url 'collections_app:placement_detail' placement.id %}">Подробнее</a></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">По выбранным условиям экземпляров не найдено.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include "includes/pagination.html" %}
+{% endblock %}

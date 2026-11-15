@@ -11,9 +11,18 @@
         <p>Всего пользователей: <strong>{{ stats.total_users }}</strong></p>
         <p>Разных исполнителей: <strong>{{ stats.total_artists }}</strong></p>
         <p>Включений пластинок в коллекции: <strong>{{ stats.total_links }}</strong></p>
-        <p class="text-muted mb-0">Одна пластинка может входить в несколько коллекций.</p>
+        <p class="text-muted mb-0">Одна пластинка может входить в несколько коллекций. Число включений учитывает историю, в том числе выведенные экземпляры.</p>
     </div>
 </div>
+
+<h2>Состояния пластинок в коллекциях</h2>
+<ul class="list-group mb-4">
+    <li class="list-group-item">Находятся в коллекциях: <strong>{{ status_counts.current }}</strong></li>
+    <li class="list-group-item">Доступны для обмена: <strong>{{ status_counts.available }}</strong></li>
+    <li class="list-group-item">Зарезервированы: <strong>{{ status_counts.reserved }}</strong></li>
+    <li class="list-group-item">Выведены (история): <strong>{{ status_counts.removed }}</strong></li>
+</ul>
+<p><a href="{% url 'collections_app:placements' %}">Открыть реестр экземпляров и их статусов</a></p>
 
 <h2>Годы выпуска</h2>
 {% if year_stats.known_year_records %}
@@ -77,7 +86,7 @@
 </div>
 {% include "includes/pagination.html" %}
 
-<h2 class="mt-4">Вне коллекций: {{ uncollected_count }}</h2>
+<h2 class="mt-4">Вне действующих коллекций: {{ uncollected_count }}</h2>
 <ul class="list-group">
     {% for record in uncollected %}
         <li class="list-group-item"><a href="{% url 'records:record_detail' record.pk %}">{{ record.title }} — {{ record.artist }}</a></li>

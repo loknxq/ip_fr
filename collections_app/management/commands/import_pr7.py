@@ -102,9 +102,14 @@ def save_entities(model, objects):
     for obj in objects:
         current = model.objects.filter(pk=obj.pk).first()
         if current is not None:
+            # ПР10: slug формируется при save(), GeneratedField — в SQLite.
+            # Они отсутствуют в исходной БД ПР7 и не должны считаться
+            # конфликтом при безопасном повторном импорте.
             conflicts = [
                 field.name for field in model._meta.concrete_fields
-                if getattr(current, field.attname)
+                if not field.generated
+                and not (model is Record and field.name == "slug")
+                and getattr(current, field.attname)
                 != getattr(obj, field.attname)
             ]
             if conflicts:

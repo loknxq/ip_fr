@@ -9,6 +9,8 @@
         <p class="card-text"><strong>Исполнитель:</strong> {{ record.artist }}</p>
         <p class="card-text"><strong>Жанр:</strong> {{ record.genre|default:"Не указан" }}</p>
         <p class="card-text"><strong>Год:</strong> {{ record.year|default:"Неизвестен" }}</p>
+        {% if record.is_vintage %}<p class="card-text"><span class="badge bg-secondary">Классическое издание (до 1990 г.)</span></p>{% endif %}
+        <p class="text-muted"><small>Адрес: {{ record.slug }}</small></p>
     </div>
 </div>
 <h2 class="mt-4">В коллекциях</h2>

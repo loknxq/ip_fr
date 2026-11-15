@@ -4,21 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Vinyl Collection{% endblock %}</title>
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     {% include "includes/navigation.html" %}
-    
+
     <main class="container mt-4">
         {% block content %}
         {% endblock %}
     </main>
 
     <footer class="container mt-4 mb-3 text-muted">
-        <p>© <span id="current-year"></span> Vinyl Collection Service</p>
+        <p>© <span id="current-year"></span> {{ site_name }}</p>
     </footer>
-    
+
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

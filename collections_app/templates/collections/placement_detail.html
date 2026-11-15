@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Пластинка в коллекции №{{ placement.pk }}{% endblock %}
+{% block content %}
+<h1>Экземпляр №{{ placement.pk }}</h1>
+<div class="card"><div class="card-body">
+    <p><strong>Пластинка:</strong> <a href="{{ placement.record.get_absolute_url }}">{{ placement.record.title }} — {{ placement.record.artist }}</a></p>
+    <p><strong>Коллекция:</strong> <a href="{% url 'collections_app:collection_detail' placement.collection_id %}">{{ placement.collection.name }}</a></p>
+    <p><strong>Год выпуска:</strong> {{ placement.record.year|default:"Неизвестен" }}</p>
+    <p><strong>Состояние:</strong> {{ placement.get_status_display }}</p>
+    <p><strong>Доступна для обмена:</strong> {% if placement.status == "in_collection" %}да{% else %}нет{% endif %}</p>
+</div></div>
+<a href="{% url 'collections_app:placements' %}" class="btn btn-outline-secondary mt-3">← к реестру</a>
+{% endblock %}

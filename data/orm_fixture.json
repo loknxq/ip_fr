@@ -1,257 +1,267 @@
 [
-{
-  "model": "records.record",
-  "pk": 1,
-  "fields": {
-    "title": "Abbey Road",
-    "artist": "The Beatles",
-    "genre": "Rock",
-    "year": 1969
+  {
+    "model": "records.record",
+    "pk": 1,
+    "fields": {
+      "title": "Abbey Road",
+      "artist": "The Beatles",
+      "genre": "Rock",
+      "year": 1969,
+      "slug": "abbey-road-the-beatles-1"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 2,
+    "fields": {
+      "title": "The Dark Side of the Moon",
+      "artist": "Pink Floyd",
+      "genre": "Progressive Rock",
+      "year": 1973,
+      "slug": "the-dark-side-of-the-moon-pink-floyd-2"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 3,
+    "fields": {
+      "title": "Thriller",
+      "artist": "Michael Jackson",
+      "genre": "Pop",
+      "year": 1982,
+      "slug": "thriller-michael-jackson-3"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 4,
+    "fields": {
+      "title": "Back in Black",
+      "artist": "AC/DC",
+      "genre": "Hard Rock",
+      "year": 1980,
+      "slug": "back-in-black-acdc-4"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 5,
+    "fields": {
+      "title": "The Wall",
+      "artist": "Pink Floyd",
+      "genre": "Progressive Rock",
+      "year": 1979,
+      "slug": "the-wall-pink-floyd-5"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 6,
+    "fields": {
+      "title": "Nevermind",
+      "artist": "Nirvana",
+      "genre": "Grunge",
+      "year": 1991,
+      "slug": "nevermind-nirvana-6"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 7,
+    "fields": {
+      "title": "Rumours",
+      "artist": "Fleetwood Mac",
+      "genre": "Soft Rock",
+      "year": 1977,
+      "slug": "rumours-fleetwood-mac-7"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 8,
+    "fields": {
+      "title": "Kind of Blue",
+      "artist": "Miles Davis",
+      "genre": "Jazz",
+      "year": 1959,
+      "slug": "kind-of-blue-miles-davis-8"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 9,
+    "fields": {
+      "title": "The Velvet Underground & Nico",
+      "artist": "The Velvet Underground",
+      "genre": "Art Rock",
+      "year": 1967,
+      "slug": "the-velvet-underground-nico-the-velvet-underground-9"
+    }
+  },
+  {
+    "model": "records.record",
+    "pk": 10,
+    "fields": {
+      "title": "OK Computer",
+      "artist": "Radiohead",
+      "genre": "Alternative Rock",
+      "year": 1997,
+      "slug": "ok-computer-radiohead-10"
+    }
+  },
+  {
+    "model": "collections_app.collection",
+    "pk": 1,
+    "fields": {
+      "name": "Классика рока"
+    }
+  },
+  {
+    "model": "collections_app.collection",
+    "pk": 2,
+    "fields": {
+      "name": "Pink Floyd — избранное"
+    }
+  },
+  {
+    "model": "collections_app.collection",
+    "pk": 3,
+    "fields": {
+      "name": "Легенды 70-х"
+    }
+  },
+  {
+    "model": "collections_app.collection",
+    "pk": 4,
+    "fields": {
+      "name": "Для вечернего прослушивания"
+    }
+  },
+  {
+    "model": "collections_app.collection",
+    "pk": 5,
+    "fields": {
+      "name": "Хиты 80-х"
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 1,
+    "fields": {
+      "collection": 1,
+      "record": 1
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 2,
+    "fields": {
+      "collection": 1,
+      "record": 4
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 3,
+    "fields": {
+      "collection": 1,
+      "record": 5
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 4,
+    "fields": {
+      "collection": 2,
+      "record": 2
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 5,
+    "fields": {
+      "collection": 2,
+      "record": 5
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 6,
+    "fields": {
+      "collection": 3,
+      "record": 2
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 7,
+    "fields": {
+      "collection": 3,
+      "record": 5
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 8,
+    "fields": {
+      "collection": 3,
+      "record": 7
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 9,
+    "fields": {
+      "collection": 4,
+      "record": 8
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 10,
+    "fields": {
+      "collection": 4,
+      "record": 9
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 11,
+    "fields": {
+      "collection": 4,
+      "record": 10
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 12,
+    "fields": {
+      "collection": 5,
+      "record": 3
+    }
+  },
+  {
+    "model": "collections_app.collectionrecord",
+    "pk": 13,
+    "fields": {
+      "collection": 5,
+      "record": 4
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "name": "Иван Петров",
+      "email": "ivan@example.com"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "name": "Анна Смирнова",
+      "email": "anna@example.com"
+    }
   }
-},
-{
-  "model": "records.record",
-  "pk": 2,
-  "fields": {
-    "title": "The Dark Side of the Moon",
-    "artist": "Pink Floyd",
-    "genre": "Progressive Rock",
-    "year": 1973
-  }
-},
-{
-  "model": "records.record",
-  "pk": 3,
-  "fields": {
-    "title": "Thriller",
-    "artist": "Michael Jackson",
-    "genre": "Pop",
-    "year": 1982
-  }
-},
-{
-  "model": "records.record",
-  "pk": 4,
-  "fields": {
-    "title": "Back in Black",
-    "artist": "AC/DC",
-    "genre": "Hard Rock",
-    "year": 1980
-  }
-},
-{
-  "model": "records.record",
-  "pk": 5,
-  "fields": {
-    "title": "The Wall",
-    "artist": "Pink Floyd",
-    "genre": "Progressive Rock",
-    "year": 1979
-  }
-},
-{
-  "model": "records.record",
-  "pk": 6,
-  "fields": {
-    "title": "Nevermind",
-    "artist": "Nirvana",
-    "genre": "Grunge",
-    "year": 1991
-  }
-},
-{
-  "model": "records.record",
-  "pk": 7,
-  "fields": {
-    "title": "Rumours",
-    "artist": "Fleetwood Mac",
-    "genre": "Soft Rock",
-    "year": 1977
-  }
-},
-{
-  "model": "records.record",
-  "pk": 8,
-  "fields": {
-    "title": "Kind of Blue",
-    "artist": "Miles Davis",
-    "genre": "Jazz",
-    "year": 1959
-  }
-},
-{
-  "model": "records.record",
-  "pk": 9,
-  "fields": {
-    "title": "The Velvet Underground & Nico",
-    "artist": "The Velvet Underground",
-    "genre": "Art Rock",
-    "year": 1967
-  }
-},
-{
-  "model": "records.record",
-  "pk": 10,
-  "fields": {
-    "title": "OK Computer",
-    "artist": "Radiohead",
-    "genre": "Alternative Rock",
-    "year": 1997
-  }
-},
-{
-  "model": "collections_app.collection",
-  "pk": 1,
-  "fields": {
-    "name": "Классика рока"
-  }
-},
-{
-  "model": "collections_app.collection",
-  "pk": 2,
-  "fields": {
-    "name": "Pink Floyd — избранное"
-  }
-},
-{
-  "model": "collections_app.collection",
-  "pk": 3,
-  "fields": {
-    "name": "Легенды 70-х"
-  }
-},
-{
-  "model": "collections_app.collection",
-  "pk": 4,
-  "fields": {
-    "name": "Для вечернего прослушивания"
-  }
-},
-{
-  "model": "collections_app.collection",
-  "pk": 5,
-  "fields": {
-    "name": "Хиты 80-х"
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 1,
-  "fields": {
-    "collection": 1,
-    "record": 1
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 2,
-  "fields": {
-    "collection": 1,
-    "record": 4
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 3,
-  "fields": {
-    "collection": 1,
-    "record": 5
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 4,
-  "fields": {
-    "collection": 2,
-    "record": 2
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 5,
-  "fields": {
-    "collection": 2,
-    "record": 5
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 6,
-  "fields": {
-    "collection": 3,
-    "record": 2
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 7,
-  "fields": {
-    "collection": 3,
-    "record": 5
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 8,
-  "fields": {
-    "collection": 3,
-    "record": 7
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 9,
-  "fields": {
-    "collection": 4,
-    "record": 8
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 10,
-  "fields": {
-    "collection": 4,
-    "record": 9
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 11,
-  "fields": {
-    "collection": 4,
-    "record": 10
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 12,
-  "fields": {
-    "collection": 5,
-    "record": 3
-  }
-},
-{
-  "model": "collections_app.collectionrecord",
-  "pk": 13,
-  "fields": {
-    "collection": 5,
-    "record": 4
-  }
-},
-{
-  "model": "users.user",
-  "pk": 1,
-  "fields": {
-    "name": "Иван Петров",
-    "email": "ivan@example.com"
-  }
-},
-{
-  "model": "users.user",
-  "pk": 2,
-  "fields": {
-    "name": "Анна Смирнова",
-    "email": "anna@example.com"
-  }
-}
 ]
