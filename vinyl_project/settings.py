@@ -1,6 +1,8 @@
 """Настройки учебного проекта Vinyl Collection Service."""
 
+import mimetypes
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,6 +13,11 @@ SECRET_KEY = os.environ.get(
 )
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+TESTING = (
+    "test" in sys.argv or "pytest" in sys.modules
+    or "PYTEST_VERSION" in os.environ
+)
+DEBUG_TOOLBAR_ENABLED = DEBUG and not TESTING
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,6 +41,22 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG_TOOLBAR_ENABLED:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(1, "debug_toolbar.middleware.DebugToolbarMiddleware")
+
+INTERNAL_IPS = ["127.0.0.1", "::1"]
+DEBUG_TOOLBAR_CONFIG = {"SHOW_COLLAPSED": True}
+DEBUG_TOOLBAR_PANELS = [
+    "debug_toolbar.panels.versions.VersionsPanel",
+    "debug_toolbar.panels.timer.TimerPanel",
+    "debug_toolbar.panels.sql.SQLPanel",
+    "debug_toolbar.panels.templates.TemplatesPanel",
+    "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+]
+# На Windows системная ассоциация .js иногда мешает загрузке модулей панели.
+mimetypes.add_type("application/javascript", ".js", True)
 
 ROOT_URLCONF = "vinyl_project.urls"
 TEMPLATES = [

@@ -6,7 +6,7 @@
 <h1>Пластинки</h1>
 <p>Каталог музыкальных изданий. Поиск, фильтры и сортировка работают совместно.</p>
 {% include "records/includes/filter_form.html" %}
-<p class="text-muted">Найдено: {{ page_obj.paginator.count }}. По 5 пластинок на странице.</p>
+<p class="text-muted">Найдено: {{ page_obj.paginator.count }}. По {{ page_obj.paginator.per_page }} пластинок на странице.</p>
 {% include "records/includes/record_items.html" %}
 {% include "includes/pagination.html" %}
 {% endblock %}

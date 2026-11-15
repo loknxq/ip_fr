@@ -3,7 +3,7 @@
 import re
 
 from django.core.paginator import Paginator
-from django.db.models import Avg, Count, Max, Min, Q, Value
+from django.db.models import Avg, Count, F, Max, Min, Q, Value
 from django.db.models.functions import Coalesce, NullIf
 from django.shortcuts import get_object_or_404, render
 
@@ -82,10 +82,23 @@ def statistics(request):
     uncollected = Record.objects.filter(collections__isnull=True).order_by(
         "title", "pk",
     )
+    link_rows = CollectionRecord.objects.annotate(
+        collection_name=F("collection__name"),
+        record_title=F("record__title"),
+        record_artist=F("record__artist"),
+        record_year=F("record__year"),
+    ).values(
+        "id", "collection_id", "record_id", "collection_name",
+        "record_title", "record_artist", "record_year",
+    ).order_by("collection_name", "record_title", "id")
+    page_obj = Paginator(link_rows, PAGE_SIZE).get_page(
+        request.GET.get("page"),
+    )
     return render(
         request, "collections/statistics.html",
         {"stats": stats, "year_stats": year_stats,
          "by_collection": by_collection, "by_genre": by_genre,
          "uncollected_count": uncollected.count(),
-         "uncollected": uncollected[:5]},
+         "uncollected": uncollected[:5],
+         "link_rows": page_obj.object_list, "page_obj": page_obj},
     )

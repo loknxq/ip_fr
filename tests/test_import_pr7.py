@@ -2,6 +2,7 @@
 
 import hashlib
 import sqlite3
+from contextlib import closing
 from io import StringIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -21,7 +22,7 @@ class ImportTests(TestCase):
         self.directory = TemporaryDirectory(dir=settings.BASE_DIR)
         self.addCleanup(self.directory.cleanup)
         self.source = Path(self.directory.name) / "legacy.sqlite"
-        with sqlite3.connect(self.source) as connection:
+        with closing(sqlite3.connect(self.source)) as connection, connection:
             connection.executescript(
                 "CREATE TABLE records "
                 "(id INTEGER, title TEXT, artist TEXT, "
@@ -55,7 +56,7 @@ class ImportTests(TestCase):
         return output.getvalue()
 
     def change_source(self, sql, parameters=()):
-        with sqlite3.connect(self.source) as connection:
+        with closing(sqlite3.connect(self.source)) as connection, connection:
             connection.execute(sql, parameters)
 
     def assert_empty_target(self):

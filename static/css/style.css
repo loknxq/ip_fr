@@ -77,6 +77,21 @@ input, select, button { font: inherit; }
     border-color: #aebaca;
     background: white;
 }
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: white;
+}
+.table-responsive { overflow-x: auto; }
+.table { border-collapse: collapse; width: 100%; background: white; }
+.table th, .table td {
+    padding: .65rem .8rem;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+.table th { background: #edf2f8; }
+.table td { overflow-wrap: anywhere; }
 .list-group { padding: 0; margin: 0; list-style: none; }
 .list-group-item {
     padding: .85rem 1rem;

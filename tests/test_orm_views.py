@@ -4,10 +4,12 @@ from datetime import date
 from html.parser import HTMLParser
 from urllib.parse import parse_qs, urlsplit
 
+from django.db import connection
 from django.test import TestCase
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 
-from collections_app.models import Collection
+from collections_app.models import Collection, CollectionRecord
 from records.models import Record
 from users.models import User
 
@@ -337,6 +339,9 @@ class ORMViewTests(TestCase):
         self.assertEqual(response.context["stats"]["total_links"], 0)
         self.assertEqual(response.context["uncollected_count"], 0)
         self.assertIsNone(response.context["year_stats"]["average_year"])
+        self.assertEqual(list(response.context["link_rows"]), [])
+        self.assertEqual(response.context["page_obj"].paginator.count, 0)
+        self.assertContains(response, "В коллекциях пока нет пластинок.")
         self.assertContains(
             response, "Нет пластинок с известным годом выпуска",
         )
@@ -393,3 +398,68 @@ class ORMViewTests(TestCase):
         response = self.client.get(url, {"artist": "x" * 201})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["form"].errors)
+
+    def test_statistics_projects_related_values_and_executes_join_query(self):
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(reverse("collections_app:statistics"))
+        rows = list(response.context["link_rows"])
+        self.assertEqual(len(rows), 5)
+        fields = {
+            "id", "collection_id", "record_id", "collection_name",
+            "record_title", "record_artist", "record_year",
+        }
+        for row in rows:
+            self.assertIsInstance(row, dict)
+            self.assertEqual(set(row), fields)
+            link = CollectionRecord.objects.select_related(
+                "collection", "record",
+            ).get(pk=row["id"])
+            self.assertEqual(row, {
+                "id": link.pk, "collection_id": link.collection_id,
+                "record_id": link.record_id,
+                "collection_name": link.collection.name,
+                "record_title": link.record.title,
+                "record_artist": link.record.artist,
+                "record_year": link.record.year,
+            })
+            self.assertContains(response, reverse(
+                "collections_app:collection_detail", args=[link.collection_id],
+            ))
+            self.assertContains(response, reverse(
+                "records:record_detail", args=[link.record_id],
+            ))
+        projected_queries = [
+            item["sql"] for item in queries.captured_queries
+            if 'AS "collection_name"' in item["sql"]
+            and 'AS "record_title"' in item["sql"]
+        ]
+        self.assertEqual(len(projected_queries), 1)
+        for model in (Collection, Record):
+            self.assertIn(
+                f'JOIN "{model._meta.db_table}"', projected_queries[0],
+            )
+
+    def test_statistics_pagination_makes_every_link_accessible_once(self):
+        url = reverse("collections_app:statistics")
+        response = self.client.get(url)
+        row_ids, page_sizes, row_order = [], [], []
+        while True:
+            self.assertEqual(response.status_code, 200)
+            rows = list(response.context["link_rows"])
+            page_sizes.append(len(rows))
+            row_ids.extend(row["id"] for row in rows)
+            row_order.extend(
+                (row["collection_name"], row["record_title"], row["id"])
+                for row in rows
+            )
+            parser = LinkParser()
+            parser.feed(response.content.decode())
+            if not parser.next_url:
+                break
+            response = self.client.get(url + parser.next_url)
+        self.assertEqual(page_sizes, [5, 5, 2])
+        self.assertEqual(len(row_ids), len(set(row_ids)))
+        self.assertEqual(set(row_ids), set(
+            CollectionRecord.objects.values_list("pk", flat=True),
+        ))
+        self.assertEqual(row_order, sorted(row_order))
