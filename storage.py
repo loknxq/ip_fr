@@ -68,7 +68,10 @@ def load_users() -> list[User]:
     except FileNotFoundError:
         return []
     except (json.JSONDecodeError, KeyError):
-        print("Ошибка: файл данных пользователей повреждён. Будет создан новый.")
+        print(
+            "Ошибка: файл данных пользователей повреждён. "
+            "Будет создан новый."
+        )
         return []
 
 

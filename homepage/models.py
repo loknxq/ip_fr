@@ -1,3 +1,1 @@
-from django.db import models
-
-# Create your models here.
+"""Главная страница не имеет собственных моделей."""

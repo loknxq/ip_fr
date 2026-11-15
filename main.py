@@ -6,15 +6,14 @@ from storage import (
     load_collections, save_collections,
     load_users, save_users,
 )
-from models import Record, Collection, User
+from models import Record, Collection
 from models.records import add_record, show_records, find_record
 from models.collections import (
     add_collection,
     show_collections,
     show_collection_content,
-    find_collection_by_id,
 )
-from models.users import add_user, show_users, find_user
+from models.users import add_user, show_users
 
 
 def show_main_menu() -> None:

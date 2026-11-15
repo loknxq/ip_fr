@@ -1,17 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Поиск пластинок{% endblock %}
 {% block content %}
-<h1>Поиск: «{{ query }}»</h1>
-<ul class="list-group">
-    {% for record in results %}
-        <li class="list-group-item">
-            <a href="{% url 'records:record_detail' record.id %}">
-                {{ record.title }} — {{ record.artist }}
-            </a>
-        </li>
-    {% empty %}
-        <li class="list-group-item">Ничего не найдено.</li>
-    {% endfor %}
-</ul>
+<h1>Поиск пластинок</h1>
+{% include "records/includes/filter_form.html" %}
+{% if query %}
+    <p>По запросу «{{ query }}» найдено: {{ page_obj.paginator.count }}.</p>
+    {% include "records/includes/record_items.html" %}
+    {% include "includes/pagination.html" %}
+{% else %}
+    <p class="alert alert-info">Введите название пластинки или исполнителя для поиска.</p>
+{% endif %}
 <a href="{% url 'records:records' %}" class="btn btn-secondary mt-3">← к списку</a>
 {% endblock %}

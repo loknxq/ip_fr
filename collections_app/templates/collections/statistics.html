@@ -4,24 +4,58 @@
 
 {% block content %}
 <h1>Статистика</h1>
-
 <div class="card mb-4">
     <div class="card-body">
         <p>Всего пластинок: <strong>{{ stats.total_records }}</strong></p>
         <p>Всего коллекций: <strong>{{ stats.total_collections }}</strong></p>
         <p>Всего пользователей: <strong>{{ stats.total_users }}</strong></p>
+        <p>Разных исполнителей: <strong>{{ stats.total_artists }}</strong></p>
+        <p>Включений пластинок в коллекции: <strong>{{ stats.total_links }}</strong></p>
+        <p class="text-muted mb-0">Одна пластинка может входить в несколько коллекций.</p>
     </div>
 </div>
+
+<h2>Годы выпуска</h2>
+{% if year_stats.known_year_records %}
+    <p>Самое раннее издание: <strong>{{ year_stats.oldest_year }}</strong>.</p>
+    <p>Самое позднее издание: <strong>{{ year_stats.newest_year }}</strong>.</p>
+    <p>Средний год выпуска: <strong>{{ year_stats.average_year|floatformat:1 }}</strong>.</p>
+    <p class="text-muted">Расчёт по {{ year_stats.known_year_records }} пластинкам с известным годом выпуска. Неизвестные годы не учитываются.</p>
+{% else %}
+    <p>Нет пластинок с известным годом выпуска.</p>
+{% endif %}
 
 <h2 class="mt-4">Пластинок в коллекциях</h2>
 <ul class="list-group">
     {% for c in by_collection %}
         <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{ c.name }}
+            <a href="{% url 'collections_app:collection_detail' c.pk %}">{{ c.name }}</a>
             <span class="badge bg-primary rounded-pill">{{ c.records_count }}</span>
         </li>
     {% empty %}
         <li class="list-group-item">Нет данных.</li>
     {% endfor %}
 </ul>
+
+<h2 class="mt-4">Пластинок по жанрам</h2>
+<ul class="list-group">
+    {% for genre in by_genre %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ genre.genre_name }}
+            <span class="badge bg-primary rounded-pill">{{ genre.records_count }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Нет данных.</li>
+    {% endfor %}
+</ul>
+
+<h2 class="mt-4">Вне коллекций: {{ uncollected_count }}</h2>
+<ul class="list-group">
+    {% for record in uncollected %}
+        <li class="list-group-item"><a href="{% url 'records:record_detail' record.pk %}">{{ record.title }} — {{ record.artist }}</a></li>
+    {% empty %}
+        <li class="list-group-item">Пластинок вне коллекций нет.</li>
+    {% endfor %}
+</ul>
+{% if uncollected_count > 5 %}<p class="text-muted mt-2">Показаны первые 5 пластинок по названию.</p>{% endif %}
 {% endblock %}

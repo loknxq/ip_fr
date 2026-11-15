@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% block title %}{{ collection.name }}{% endblock %}
 {% block content %}
-{% if collection %}
-    <h1>{{ collection.name }}</h1>
-    <ul class="list-group">
-        {% for r in records %}
-            <li class="list-group-item">{{ r.title }} — {{ r.artist }}</li>
-        {% empty %}
-            <li class="list-group-item">Коллекция пуста.</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <h1 class="text-danger">Коллекция не найдена</h1>
-{% endif %}
+<h1>{{ collection.name }}</h1>
+<ul class="list-group">
+    {% for r in records %}
+        <li class="list-group-item">
+            <a href="{% url 'records:record_detail' r.pk %}">{{ r.title }} — {{ r.artist }}</a>
+            {% if r.year %}({{ r.year }}){% endif %}
+            <span class="text-muted">· {{ r.genre|default:"Жанр не указан" }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Коллекция пуста.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'records:records' %}?collection={{ collection.pk }}" class="btn btn-outline-primary mt-3">Фильтровать пластинки коллекции</a>
 <a href="{% url 'collections_app:collections' %}" class="btn btn-secondary mt-3">← к коллекциям</a>
 {% endblock %}
