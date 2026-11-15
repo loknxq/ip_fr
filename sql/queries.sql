@@ -71,3 +71,5 @@ FROM records
 WHERE genre = 'Jazz'
 ORDER BY year DESC
 LIMIT 10;
+
+SELECT id, title, artist, year FROM records WHERE genre = 'Jazz' ORDER BY year DESC LIMIT 10;

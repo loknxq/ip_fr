@@ -35,6 +35,21 @@ def record_detail(request, record_id):
         status=404 if record is None else 200,
     )
 
+# def record_detail(request, record_id):
+#     conn = sqlite3.connect(DB_PATH)
+#     conn.row_factory = sqlite3.Row
+#     record = conn.execute(
+#         "SELECT id, name, artist, genre, year FROM records WHERE id = ?;",
+#         [record_id],
+#     ).fetchone()
+#     conn.close()
+#     return render(
+#         request,
+#         "records/record_detail.html",
+#         {"record": record},
+#         status=404 if record is None else 200,
+#     )
+
 
 def search_records(request):
     query = request.GET.get("q", "").strip()
@@ -58,3 +73,5 @@ def search_records(request):
         "records/search.html",
         {"results": results, "query": query},
     )
+
+
